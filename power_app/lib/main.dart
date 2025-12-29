@@ -37,7 +37,7 @@ class _HomeFrameState extends State<HomeFrame> {
               ResizablePane(
                 initialSize: width,
                 child: SlideNav(title: 'title', width: width),
-                onSizeChangeEnd: (w) {
+                onSizeChange: (w) {
                   setState(() {
                     width = w;
                   });
