@@ -25,10 +25,16 @@ class HomeFrame extends StatelessWidget {
       children: [
         Container(height: 50, color: Colors.red),
         Expanded(
-          child: Row(
+          child: ResizablePanel.horizontal(
             children: [
-              SlideNav(title: ''),
-              Expanded(child: ContentZone()),
+              const ResizablePane(
+                initialSize: 400,
+                child: SlideNav(title: 'title'),
+              ),
+              ResizablePane(
+                initialSize: MediaQuery.of(context).size.width - 400,
+                child: Expanded(child: ContentZone()),
+              ),
             ],
           ),
         ),
