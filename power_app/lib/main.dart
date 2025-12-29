@@ -31,7 +31,19 @@ class _HomeFrameState extends State<HomeFrame> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(height: 50, color: Colors.red),
+        Container(
+          color: Colors.white,
+          height: 50,
+          child: Row(
+            children: [
+              Image.asset('assets/imgs/power-logo.png'),
+              Text(
+                'Power App',
+                style: TextStyle(color: Colors.blue),
+              ).h3.semiBold.italic,
+            ],
+          ),
+        ),
         Expanded(
           child: ResizablePanel.horizontal(
             children: [
@@ -59,6 +71,6 @@ class _HomeFrameState extends State<HomeFrame> {
 class ContentZone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.blue);
+    return Container(color: Colors.white);
   }
 }
