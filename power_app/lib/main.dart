@@ -24,7 +24,7 @@ class HomeFrame extends StatefulWidget {
 }
 
 class _HomeFrameState extends State<HomeFrame> {
-  double width = 400;
+  double width = 200;
 
   @override
   Widget build(BuildContext context) {
