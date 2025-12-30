@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:power_app/api/GithubApi.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart'
     show
         Colors,
@@ -132,8 +133,7 @@ class Header extends StatelessWidget {
                 GhostButton(
                   density: ButtonDensity.icon,
                   onPressed: () {
-                    print(1);
-                    context.push('/pageA');
+                    GithubApi.fetch();
                   },
                   child: FaIcon(
                     FontAwesomeIcons.envelope,
