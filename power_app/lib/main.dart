@@ -45,7 +45,13 @@ class _HomeFrameState extends State<HomeFrame> {
               children: [
                 Row(
                   children: [
-                    Image.asset('assets/imgs/power-logo.png'),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: .all(.circular(25)),
+                      ),
+                      clipBehavior: .hardEdge,
+                      child: Image.asset('assets/imgs/power-logo.png'),
+                    ),
                     Text(
                       'Power App',
                       style: TextStyle(color: Colors.blue),
