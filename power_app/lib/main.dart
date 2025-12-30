@@ -61,7 +61,66 @@ class _HomeFrameState extends State<HomeFrame> {
                 Row(
                   children: [
                     OutlineButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final FormController controller = FormController();
+                            return AlertDialog(
+                              title: const Text('Edit profile'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Make changes to your profile here. Click save when you\'re done',
+                                  ),
+                                  const Gap(16),
+                                  ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxWidth: 400,
+                                    ),
+                                    child: Form(
+                                      controller: controller,
+                                      child: const FormTableLayout(
+                                        rows: [
+                                          FormField<String>(
+                                            key: FormKey(#name),
+                                            label: Text('Name'),
+                                            child: TextField(
+                                              initialValue:
+                                                  'Thito Yalasatria Sunarya',
+                                              autofocus: true,
+                                            ),
+                                          ),
+                                          FormField<String>(
+                                            key: FormKey(#username),
+                                            label: Text('Username'),
+                                            child: TextField(
+                                              initialValue: '@sunaryathito',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ).withPadding(vertical: 16),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                PrimaryButton(
+                                  child: const Text('Save changes'),
+                                  onPressed: () {
+                                    // Return the form values and close the dialog.
+                                    Navigator.of(
+                                      context,
+                                    ).pop(controller.values);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                       trailing: const Icon(
                         Icons.search,
                       ).iconSmall().iconMutedForeground(),
