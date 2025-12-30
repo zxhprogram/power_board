@@ -32,6 +32,9 @@ class _SlideNavState extends State<SlideNav> {
       case 3:
         context.go('/radio');
         break;
+      case 4:
+        context.go('/github');
+        break;
       default:
         print('no match router');
     }
@@ -87,6 +90,7 @@ class NarrowSlideBar extends StatelessWidget {
         buildButton('Explore', BootstrapIcons.compass),
         buildButton('Library', BootstrapIcons.musicNoteList),
         buildButton('Radio', BootstrapIcons.broadcast),
+        buildButton('Github', BootstrapIcons.github),
       ],
     );
   }
@@ -112,6 +116,7 @@ class WideSlideBar extends StatelessWidget {
         buildButton('Explore', BootstrapIcons.compass),
         buildButton('Library', BootstrapIcons.musicNoteList),
         buildButton('Radio', BootstrapIcons.broadcast),
+        buildButton('Github', BootstrapIcons.github),
       ],
     );
   }

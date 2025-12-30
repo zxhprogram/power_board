@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:power_app/components/Heade.dart';
 import 'package:power_app/components/SlideNav.dart';
 import 'package:power_app/pages/ExplorePage.dart';
+import 'package:power_app/pages/GithubPage.dart';
 import 'package:power_app/pages/HomePage.dart';
 import 'package:power_app/pages/LibraryPage.dart';
 import 'package:power_app/pages/RadioPage.dart';
@@ -76,6 +77,7 @@ final GoRouter router = GoRouter(
         GoRoute(path: '/explore', builder: (context, state) => ExplorePage()),
         GoRoute(path: '/library', builder: (context, state) => LibraryPage()),
         GoRoute(path: '/radio', builder: (context, state) => RadioPage()),
+        GoRoute(path: '/github', builder: (context, state) => GithubPage()),
       ],
     ),
   ],
