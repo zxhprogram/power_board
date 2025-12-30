@@ -144,7 +144,7 @@ class _HomeFrameState extends State<HomeFrame> {
                       density: ButtonDensity.icon,
                       onPressed: () {},
                       child: FaIcon(
-                        FontAwesomeIcons.github,
+                        FontAwesomeIcons.envelope,
                         color: theme.colorScheme.secondaryForeground,
                       ).iconLarge(),
                     ),
@@ -152,14 +152,10 @@ class _HomeFrameState extends State<HomeFrame> {
                     GhostButton(
                       density: ButtonDensity.icon,
                       onPressed: () {},
-                      child: ColorFiltered(
-                        // turns into white
-                        colorFilter: ColorFilter.mode(
-                          theme.colorScheme.secondaryForeground,
-                          BlendMode.srcIn,
-                        ),
-                        child: FlutterLogo(size: 24 * theme.scaling),
-                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.userGear,
+                        color: theme.colorScheme.secondaryForeground,
+                      ).iconLarge(),
                     ),
                   ],
                 ),
