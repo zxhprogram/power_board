@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide NavigationRail;
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class SlideNav extends StatefulWidget {
@@ -18,6 +19,22 @@ class _SlideNavState extends State<SlideNav> {
     setState(() {
       selected = index;
     });
+    switch (selected) {
+      case 0:
+        context.go('/');
+        break;
+      case 1:
+        context.go('/explore');
+        break;
+      case 2:
+        context.go('/library');
+        break;
+      case 3:
+        context.go('/radio');
+        break;
+      default:
+        print('no match router');
+    }
   }
 
   @override
@@ -69,6 +86,7 @@ class NarrowSlideBar extends StatelessWidget {
         buildButton('Home', BootstrapIcons.house),
         buildButton('Explore', BootstrapIcons.compass),
         buildButton('Library', BootstrapIcons.musicNoteList),
+        buildButton('Radio', BootstrapIcons.broadcast),
       ],
     );
   }
@@ -93,6 +111,7 @@ class WideSlideBar extends StatelessWidget {
         buildButton('Home', BootstrapIcons.house),
         buildButton('Explore', BootstrapIcons.compass),
         buildButton('Library', BootstrapIcons.musicNoteList),
+        buildButton('Radio', BootstrapIcons.broadcast),
       ],
     );
   }

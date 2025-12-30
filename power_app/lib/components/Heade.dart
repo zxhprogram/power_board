@@ -1,8 +1,30 @@
-import 'package:flutter/material.dart' hide Colors, Form, showDialog, AlertDialog, FormField, TextField,Theme;
+import 'package:flutter/material.dart'
+    hide Colors, Form, showDialog, AlertDialog, FormField, TextField, Theme;
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart'
-    show Colors, TextExtension, FormController, Gap, FormTableLayout, KeyboardDisplay, Icons, IconExtension, FormKey, TextField, WidgetExtension, PrimaryButton, AlertDialog, showDialog, OutlineButton, ButtonDensity, GhostButton, Form, FormField, Theme;
+    show
+        Colors,
+        TextExtension,
+        FormController,
+        Gap,
+        FormTableLayout,
+        KeyboardDisplay,
+        Icons,
+        IconExtension,
+        FormKey,
+        TextField,
+        WidgetExtension,
+        PrimaryButton,
+        AlertDialog,
+        showDialog,
+        OutlineButton,
+        ButtonDensity,
+        GhostButton,
+        Form,
+        FormField,
+        Theme;
 
 class Header extends StatelessWidget {
   @override
@@ -109,7 +131,10 @@ class Header extends StatelessWidget {
 
                 GhostButton(
                   density: ButtonDensity.icon,
-                  onPressed: () {},
+                  onPressed: () {
+                    print(1);
+                    context.push('/pageA');
+                  },
                   child: FaIcon(
                     FontAwesomeIcons.envelope,
                     color: theme.colorScheme.secondaryForeground,
@@ -118,7 +143,11 @@ class Header extends StatelessWidget {
 
                 GhostButton(
                   density: ButtonDensity.icon,
-                  onPressed: () {},
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    }
+                  },
                   child: FaIcon(
                     FontAwesomeIcons.userGear,
                     color: theme.colorScheme.secondaryForeground,
