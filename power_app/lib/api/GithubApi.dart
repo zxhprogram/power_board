@@ -36,10 +36,10 @@ class GithubApi {
               author: str[0],
               projectName: str[1],
               programLanguage: lan[1].text,
-              stars: atag[0].text.trim(),
-              forks: atag[1].text.trim(),
+              stars: matchNumberInString(atag[0].text.trim()),
+              forks: matchNumberInString(atag[1].text.trim()),
               buildBy: buildBy,
-              starsInPeriod: starsInPeriod,
+              starsInPeriod: matchNumberInString(starsInPeriod),
             );
           }
           return null;
@@ -51,14 +51,27 @@ class GithubApi {
   }
 }
 
+int matchNumberInString(String s) {
+  var r = RegExp(r'\d+');
+  var rr = r.allMatches(s);
+  print(rr.length);
+  StringBuffer buffer = StringBuffer();
+  for (var value in rr) {
+    var subs = s.substring(value.start, value.end);
+    buffer.write(subs);
+  }
+  print(buffer.toString());
+  return int.parse(buffer.toString());
+}
+
 class TrendItem {
   String author;
   String projectName;
   String programLanguage;
-  String stars;
-  String forks;
+  int stars;
+  int forks;
   List<BuildBy> buildBy;
-  String starsInPeriod;
+  int starsInPeriod;
 
   TrendItem({
     required this.author,
@@ -90,4 +103,14 @@ class BuildBy {
 
 void main() {
   GithubApi.fetch();
+  // var r = RegExp(r'\d+');
+  // var s = "14,840 stars this month";
+  // var rr = r.allMatches(s);
+  // print(rr.length);
+  // StringBuffer buffer = StringBuffer();
+  // for (var value in rr) {
+  //   var subs = s.substring(value.start, value.end);
+  //   buffer.write(subs);
+  // }
+  // print(buffer.toString());
 }
