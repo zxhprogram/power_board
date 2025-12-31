@@ -30,6 +30,7 @@ class GithubApi {
               var avatar = a.firstChild!.attributes['src']!;
               return BuildBy(author: username, avatar: avatar);
             }).toList();
+            var starsInPeriod = spanTag[2].text.trim();
             print(buildBy);
             return TrendItem(
               author: str[0],
@@ -38,6 +39,7 @@ class GithubApi {
               stars: atag[0].text.trim(),
               forks: atag[1].text.trim(),
               buildBy: buildBy,
+              starsInPeriod: starsInPeriod,
             );
           }
           return null;
@@ -56,6 +58,7 @@ class TrendItem {
   String stars;
   String forks;
   List<BuildBy> buildBy;
+  String starsInPeriod;
 
   TrendItem({
     required this.author,
@@ -64,11 +67,12 @@ class TrendItem {
     required this.stars,
     required this.forks,
     required this.buildBy,
+    required this.starsInPeriod,
   });
 
   @override
   String toString() {
-    return '{author:$author, projectName:$projectName,programLanguage:$programLanguage,stars:$stars,forks:$forks,buildBy:$buildBy}';
+    return '{author:$author, projectName:$projectName,programLanguage:$programLanguage,stars:$stars,forks:$forks,buildBy:$buildBy,starsInPeriod:$starsInPeriod}';
   }
 }
 
