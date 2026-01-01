@@ -4,22 +4,22 @@ import 'package:http/http.dart' as http;
 class GithubApi {
   static Future<List<TrendItem?>> fetch() async {
     var r = await http.get(
-      Uri.parse('https://github.com/trending?since=monthly'),
+      Uri.parse('https://github.com/trending?since=daily'),
     );
+    print('statusCode = ${r.statusCode}');
     var b = r.body;
     var document = HtmlParser(b);
     var list = document.parse().querySelectorAll('.Box-row');
     var itemList = list
         .map((e) {
           var a = e.querySelector('.lh-condensed > a');
-          // print(a?.attributes['href']);
           var str = a?.attributes['href']?.substring(1).split('/');
           var lan = e.querySelectorAll('div.color-fg-muted > span > span');
-          // print(lan[1].text);
           var atag = e.querySelectorAll('div.color-fg-muted > a');
           var spanTag = e.querySelectorAll(
             'div.color-fg-muted > span.d-inline-block',
           );
+          var desc = e.querySelector('p')?.text.trim() ?? '';
           if (str != null &&
               str.length == 2 &&
               lan.length == 2 &&
@@ -40,6 +40,7 @@ class GithubApi {
               forks: matchNumberInString(atag[1].text.trim()),
               buildBy: buildBy,
               starsInPeriod: matchNumberInString(starsInPeriod),
+              desc: desc,
             );
           }
           return null;
@@ -72,6 +73,7 @@ class TrendItem {
   int forks;
   List<BuildBy> buildBy;
   int starsInPeriod;
+  String desc;
 
   TrendItem({
     required this.author,
@@ -81,6 +83,7 @@ class TrendItem {
     required this.forks,
     required this.buildBy,
     required this.starsInPeriod,
+    required this.desc,
   });
 
   @override
