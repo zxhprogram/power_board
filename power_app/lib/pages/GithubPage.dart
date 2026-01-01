@@ -39,6 +39,33 @@ class _GithubPageState extends State<GithubPage> {
     }
   }
 
+  final Map<String, List<String>> fruits = {
+    'Apple': ['Red Apple', 'Green Apple'],
+    'Banana': ['Yellow Banana', 'Brown Banana'],
+    'Lemon': ['Yellow Lemon', 'Green Lemon'],
+    'Tomato': ['Red', 'Green', 'Yellow', 'Brown'],
+  };
+  String? selectedValue;
+
+  Iterable<MapEntry<String, List<String>>> _filteredFruits(
+    String searchQuery,
+  ) sync* {
+    for (final entry in fruits.entries) {
+      final filteredValues = entry.value
+          .where((value) => _filterName(value, searchQuery))
+          .toList();
+      if (filteredValues.isNotEmpty) {
+        yield MapEntry(entry.key, filteredValues);
+      } else if (_filterName(entry.key, searchQuery)) {
+        yield entry;
+      }
+    }
+  }
+
+  bool _filterName(String name, String searchQuery) {
+    return name.toLowerCase().contains(searchQuery);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,136 +90,228 @@ class _GithubPageState extends State<GithubPage> {
           if (list == null) {
             return Center(child: Text('there is no data from server'));
           }
-          return ListView.builder(
-            itemBuilder: (c, i) {
-              var element = list[i] as TrendItem;
-              return Container(
-                margin: .symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  spacing: 4,
+          return Column(
+            children: [
+              Container(
+                height: 40,
+                child: Row(
+                  mainAxisAlignment: .spaceBetween,
                   children: [
+                    Container(),
                     Row(
-                      mainAxisAlignment: .spaceBetween,
                       children: [
-                        Flexible(
-                          flex: 4,
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            spacing: 5,
-                            children: [
-                              Row(
-                                spacing: 3,
-                                children: [
-                                  FaIcon(FontAwesomeIcons.appStore, size: 20),
-                                  Text(
-                                    '${element.author}/${element.projectName}',
-                                    style: .new(color: Colors.blue),
-                                  ).h4,
-                                ],
-                              ),
-                              Text(
-                                element.desc,
-                                style: .new(overflow: .ellipsis),
-                                maxLines: 2,
-                              ),
-                              Row(
-                                spacing: 8,
-                                children: [
-                                  Row(
-                                    spacing: 3,
+                        Select<String>(
+                          popup: SelectPopup.builder(
+                            builder: (context, searchQuery) async {
+                              final filteredFruits = searchQuery == null
+                                  ? fruits.entries.toList()
+                                  : _filteredFruits(searchQuery).toList();
+                              // Simulate a delay for loading
+                              // In a real-world scenario, you would fetch data from an API or database
+                              await Future.delayed(
+                                const Duration(milliseconds: 500),
+                              );
+                              return SelectItemBuilder(
+                                // When 0, the popup renders the emptyBuilder; otherwise the builder lazily builds rows.
+                                childCount: filteredFruits.isEmpty ? 0 : null,
+                                builder: (context, index) {
+                                  final entry =
+                                      filteredFruits[index %
+                                          filteredFruits.length];
+                                  return SelectGroup(
+                                    headers: [
+                                      SelectLabel(child: Text(entry.key)),
+                                    ],
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: _calcColorForProgramingLan(
-                                            element.programLanguage,
-                                          ),
-                                          borderRadius: .all(.circular(8)),
+                                      for (final value in entry.value)
+                                        SelectItemButton(
+                                          value: value,
+                                          child: Text(value),
                                         ),
-                                      ).sized(width: 16, height: 16),
-                                      Text(
-                                        element.programLanguage,
-                                        style: .new(
-                                          color: Colors.teal,
-                                          fontSize: 12,
-                                        ),
-                                      ).normal,
                                     ],
-                                  ),
-                                  Row(
-                                    spacing: 3,
-                                    children: [
-                                      FaIcon(FontAwesomeIcons.star, size: 16),
-                                      Text(
-                                        '${element.stars}',
-                                        style: .new(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    spacing: 3,
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.codeBranch,
-                                        size: 16,
-                                      ),
-                                      Text(
-                                        '${element.forks}',
-                                        style: .new(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    spacing: 3,
-                                    children: [
-                                      Text(
-                                        'Built By',
-                                        style: .new(fontSize: 12),
-                                      ),
-                                      ...element.buildBy.map((e) {
-                                        return Container(
-                                          height: 20,
-                                          width: 20,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(e.avatar),
-                                            ),
-                                            borderRadius: .all(.circular(10)),
-                                            border: .all(
-                                              color: Colors.gray,
-                                              width: 0.5,
-                                            ),
-                                          ),
-                                          clipBehavior: .hardEdge,
-                                        );
-                                      }),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  );
+                                },
+                              );
+                            },
                           ),
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: .spaceBetween,
-                            children: [
-                              Text(''),
-                              Text(
-                                '${element.starsInPeriod} stars today',
-                                style: .new(fontSize: 12, color: Colors.gray),
-                              ),
-                            ],
-                          ),
+                          itemBuilder: (context, item) {
+                            return Text(item);
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value;
+                            });
+                          },
+                          constraints: const BoxConstraints(minWidth: 200),
+                          value: selectedValue,
+                          placeholder: const Text('Any'),
                         ),
                       ],
                     ),
-                    Divider(color: Colors.purple, thickness: 1),
                   ],
                 ),
-              );
-            },
-            itemCount: list.length,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (c, i) {
+                    var element = list[i] as TrendItem;
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple.withOpacity(0.1),
+                            offset: const Offset(0, 10),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      margin: .symmetric(horizontal: 20, vertical: 10),
+                      child: Column(
+                        spacing: 4,
+                        children: [
+                          Row(
+                            mainAxisAlignment: .spaceBetween,
+                            children: [
+                              Flexible(
+                                flex: 4,
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  spacing: 5,
+                                  children: [
+                                    Row(
+                                      spacing: 3,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.appStore,
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          '${element.author}/${element.projectName}',
+                                          style: .new(color: Colors.blue),
+                                        ).h4,
+                                      ],
+                                    ),
+                                    Text(
+                                      element.desc,
+                                      style: .new(overflow: .ellipsis),
+                                      maxLines: 2,
+                                    ),
+                                    Row(
+                                      spacing: 8,
+                                      children: [
+                                        Row(
+                                          spacing: 3,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    _calcColorForProgramingLan(
+                                                      element.programLanguage,
+                                                    ),
+                                                borderRadius: .all(
+                                                  .circular(8),
+                                                ),
+                                              ),
+                                            ).sized(width: 16, height: 16),
+                                            Text(
+                                              element.programLanguage,
+                                              style: .new(
+                                                color: Colors.teal,
+                                                fontSize: 12,
+                                              ),
+                                            ).normal,
+                                          ],
+                                        ),
+                                        Row(
+                                          spacing: 3,
+                                          children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.star,
+                                              size: 16,
+                                            ),
+                                            Text(
+                                              '${element.stars}',
+                                              style: .new(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          spacing: 3,
+                                          children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.codeBranch,
+                                              size: 16,
+                                            ),
+                                            Text(
+                                              '${element.forks}',
+                                              style: .new(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          spacing: 3,
+                                          children: [
+                                            Text(
+                                              'Built By',
+                                              style: .new(fontSize: 12),
+                                            ),
+                                            ...element.buildBy.map((e) {
+                                              return Container(
+                                                height: 20,
+                                                width: 20,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      e.avatar,
+                                                    ),
+                                                  ),
+                                                  borderRadius: .all(
+                                                    .circular(10),
+                                                  ),
+                                                  border: .all(
+                                                    color: Colors.gray,
+                                                    width: 0.5,
+                                                  ),
+                                                ),
+                                                clipBehavior: .hardEdge,
+                                              );
+                                            }),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: .spaceBetween,
+                                  children: [
+                                    Text(''),
+                                    Text(
+                                      '${element.starsInPeriod} stars today',
+                                      style: .new(
+                                        fontSize: 12,
+                                        color: Colors.gray,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(color: Colors.purple, thickness: 1),
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: list.length,
+                ),
+              ),
+            ],
           );
         },
       ),
