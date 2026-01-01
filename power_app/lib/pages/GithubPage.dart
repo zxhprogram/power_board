@@ -26,6 +26,12 @@ class _GithubPageState extends State<GithubPage> {
         return Colors.blue;
       case 'TypeScript':
         return Colors.blue;
+      case 'Java':
+        return Colors.purple;
+      case 'Go':
+        return Colors.red;
+      case 'C++':
+        return Colors.indigo;
       case 'JavaScript':
         return Colors.orange;
       default:
@@ -61,7 +67,7 @@ class _GithubPageState extends State<GithubPage> {
             itemBuilder: (c, i) {
               var element = list[i] as TrendItem;
               return Container(
-                margin: .all(5),
+                margin: .symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   spacing: 4,
                   children: [
@@ -69,15 +75,21 @@ class _GithubPageState extends State<GithubPage> {
                       mainAxisAlignment: .spaceBetween,
                       children: [
                         Flexible(
-                          flex: 3,
+                          flex: 4,
                           child: Column(
                             crossAxisAlignment: .start,
                             spacing: 5,
                             children: [
-                              Text(
-                                '${element.author}/${element.projectName}',
-                                style: .new(color: Colors.blue),
-                              ).h4,
+                              Row(
+                                spacing: 3,
+                                children: [
+                                  FaIcon(FontAwesomeIcons.appStore, size: 20),
+                                  Text(
+                                    '${element.author}/${element.projectName}',
+                                    style: .new(color: Colors.blue),
+                                  ).h4,
+                                ],
+                              ),
                               Text(
                                 element.desc,
                                 style: .new(overflow: .ellipsis),
@@ -87,6 +99,7 @@ class _GithubPageState extends State<GithubPage> {
                                 spacing: 8,
                                 children: [
                                   Row(
+                                    spacing: 3,
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
@@ -106,6 +119,7 @@ class _GithubPageState extends State<GithubPage> {
                                     ],
                                   ),
                                   Row(
+                                    spacing: 3,
                                     children: [
                                       FaIcon(FontAwesomeIcons.star, size: 16),
                                       Text(
@@ -115,6 +129,7 @@ class _GithubPageState extends State<GithubPage> {
                                     ],
                                   ),
                                   Row(
+                                    spacing: 3,
                                     children: [
                                       FaIcon(
                                         FontAwesomeIcons.codeBranch,
@@ -127,7 +142,7 @@ class _GithubPageState extends State<GithubPage> {
                                     ],
                                   ),
                                   Row(
-                                    spacing: 2,
+                                    spacing: 3,
                                     children: [
                                       Text(
                                         'Built By',
