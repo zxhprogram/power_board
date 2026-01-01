@@ -45,7 +45,7 @@ class _GithubPageState extends State<GithubPage> {
   //   'Lemon': ['Yellow Lemon', 'Green Lemon'],
   //   'Tomato': ['Red', 'Green', 'Yellow', 'Brown'],
   // };
-  String? selectedValue;
+  SpokeLanguage? selectedValue;
 
   List<SpokeLanguage> _filteredFruits(String searchQuery) {
     return [];
@@ -99,7 +99,7 @@ class _GithubPageState extends State<GithubPage> {
                     Container(),
                     Row(
                       children: [
-                        Select<String>(
+                        Select<SpokeLanguage>(
                           popup: SelectPopup.builder(
                             builder: (context, searchQuery) async {
                               List<SpokeLanguage> list =
@@ -126,9 +126,10 @@ class _GithubPageState extends State<GithubPage> {
                             },
                           ).call,
                           itemBuilder: (context, item) {
-                            return Text(item);
+                            return Text(item.spokenLanguage);
                           },
                           onChanged: (value) {
+                            print(value);
                             setState(() {
                               selectedValue = value;
                             });
