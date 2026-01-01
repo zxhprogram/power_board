@@ -50,6 +50,44 @@ class GithubApi {
     print(itemList);
     return itemList;
   }
+
+  static Future<List<SpokeLanguage>> spokenLanguageList() async {
+    var r = await http.get(
+      Uri.parse('https://github.com/trending?since=daily'),
+    );
+    print('statusCode = ${r.statusCode}');
+    var b = r.body;
+    var document = HtmlParser(b);
+    var dataMenuButtonTextList = document.parse().querySelectorAll(
+      '.Box-header > .d-sm-flex > .position-relative > details > details-menu > .select-menu-list > div > a',
+    );
+    print(dataMenuButtonTextList.length);
+    return dataMenuButtonTextList.map((e) {
+      var lan = e.children[0].text.trim();
+      var url = e.attributes['href']!;
+      var pMap = Uri.parse(url).queryParameters;
+      var shortFormat = pMap['spoken_language_code'] ?? '';
+      return SpokeLanguage(spokenLanguage: lan, shortFormat: shortFormat);
+    }).toList();
+  }
+
+  static Future<List<ProgramingLanguage>> programingLanguageList() async {
+    var r = await http.get(
+      Uri.parse('https://github.com/trending?since=daily'),
+    );
+    print('statusCode = ${r.statusCode}');
+    var b = r.body;
+    var document = HtmlParser(b);
+    var dataMenuButtonTextList = document.parse().querySelectorAll(
+      '.Box-header > .d-sm-flex > .mb-3 > details > details-menu > .select-menu-list > div > a',
+    );
+    print(dataMenuButtonTextList.length);
+    return dataMenuButtonTextList.map((e) {
+      var lan = e.text.trim();
+      print(lan);
+      return ProgramingLanguage(showName: lan, queryName: lan.toLowerCase());
+    }).toList();
+  }
 }
 
 int matchNumberInString(String s) {
@@ -104,8 +142,27 @@ class BuildBy {
   }
 }
 
+class SpokeLanguage {
+  String spokenLanguage;
+  String shortFormat;
+
+  SpokeLanguage({required this.spokenLanguage, required this.shortFormat});
+}
+
+class ProgramingLanguage {
+  String showName;
+  String queryName;
+
+  ProgramingLanguage({required this.showName, required this.queryName});
+}
+
 void main() {
-  GithubApi.fetch();
+  // var map = Uri.parse(
+  //   'https://github.com/trending?spken_language=zh&a=b',
+  // ).queryParameters;
+  // print(map);
+  // GithubApi.fetch();
+  GithubApi.programingLanguageList();
   // var r = RegExp(r'\d+');
   // var s = "14,840 stars this month";
   // var rr = r.allMatches(s);
