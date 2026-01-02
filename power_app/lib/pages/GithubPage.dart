@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'
-    hide CircularProgressIndicator, Colors, Divider;
+    hide CircularProgressIndicator, Colors, Divider, ButtonStyle;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:power_app/api/GithubApi.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -39,31 +39,9 @@ class _GithubPageState extends State<GithubPage> {
     }
   }
 
-  // final Map<String, List<String>> fruits = {
-  //   'Apple': ['Red Apple', 'Green Apple'],
-  //   'Banana': ['Yellow Banana', 'Brown Banana'],
-  //   'Lemon': ['Yellow Lemon', 'Green Lemon'],
-  //   'Tomato': ['Red', 'Green', 'Yellow', 'Brown'],
-  // };
   SpokeLanguage? selectedValue;
-
-  List<SpokeLanguage> _filteredFruits(String searchQuery) {
-    return [];
-    // for (final entry in fruits.entries) {
-    //   final filteredValues = entry.value
-    //       .where((value) => _filterName(value, searchQuery))
-    //       .toList();
-    //   if (filteredValues.isNotEmpty) {
-    //     yield MapEntry(entry.key, filteredValues);
-    //   } else if (_filterName(entry.key, searchQuery)) {
-    //     yield entry;
-    //   }
-    // }
-  }
-
-  // bool _filterName(String name, String searchQuery) {
-  //   return name.toLowerCase().contains(searchQuery);
-  // }
+  ProgramingLanguage? selectedValueLan;
+  String? selectedValueDateRange;
 
   @override
   Widget build(BuildContext context) {
@@ -99,44 +77,183 @@ class _GithubPageState extends State<GithubPage> {
                     Container(),
                     Row(
                       children: [
-                        Select<SpokeLanguage>(
-                          popup: SelectPopup.builder(
-                            builder: (context, searchQuery) async {
-                              List<SpokeLanguage> list =
-                                  await GithubApi.spokenLanguageList();
-                              if (searchQuery != null) {
-                                list = list.where((e) {
-                                  return e.spokenLanguage.contains(searchQuery);
-                                }).toList();
-                              }
-                              return SelectItemBuilder(
-                                childCount: list.isEmpty ? 0 : null,
-                                builder: (context, index) {
-                                  return SelectGroup(
-                                    children: [
-                                      for (final value in list)
-                                        SelectItemButton(
-                                          value: value,
-                                          child: Text(value.spokenLanguage),
-                                        ),
-                                    ],
-                                  );
+                        Row(
+                          children: [
+                            Text(
+                              'Spoken Language:',
+                              style: .new(color: Colors.gray),
+                            ),
+                            SizedBox(
+                              width: 120,
+                              height: 40,
+                              child: Select<SpokeLanguage>(
+                                popupWidthConstraint: .flexible,
+                                borderRadius: .circular(5),
+                                popup: SelectPopup.builder(
+                                  builder: (context, searchQuery) async {
+                                    List<SpokeLanguage> list =
+                                        await GithubApi.spokenLanguageList();
+                                    if (searchQuery != null) {
+                                      list = list.where((e) {
+                                        return e.spokenLanguage.contains(
+                                          searchQuery,
+                                        );
+                                      }).toList();
+                                    }
+                                    return SelectItemBuilder(
+                                      childCount: list.isEmpty ? 0 : null,
+                                      builder: (context, index) {
+                                        return SelectGroup(
+                                          children: [
+                                            for (final value in list)
+                                              SelectItemButton(
+                                                style: ButtonStyle.text(
+                                                  size: .small,
+                                                ),
+                                                value: value,
+                                                child: Text(
+                                                  value.spokenLanguage,
+                                                ),
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ).call,
+                                itemBuilder: (context, item) {
+                                  return Text(item.spokenLanguage);
                                 },
-                              );
-                            },
-                          ).call,
-                          itemBuilder: (context, item) {
-                            return Text(item.spokenLanguage);
-                          },
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              selectedValue = value;
-                            });
-                          },
-                          constraints: const BoxConstraints(minWidth: 200),
-                          value: selectedValue,
-                          placeholder: const Text('Any'),
+                                onChanged: (value) {
+                                  print(value);
+                                  setState(() {
+                                    selectedValue = value;
+                                  });
+                                },
+                                constraints: const BoxConstraints(
+                                  minWidth: 200,
+                                ),
+                                value: selectedValue,
+                                placeholder: const Text('Any'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('Language:', style: .new(color: Colors.gray)),
+                            SizedBox(
+                              width: 120,
+                              height: 40,
+                              child: Select<ProgramingLanguage>(
+                                popupWidthConstraint: .flexible,
+                                borderRadius: .circular(5),
+                                popup: SelectPopup.builder(
+                                  builder: (context, searchQuery) async {
+                                    List<ProgramingLanguage> list =
+                                        await GithubApi.programingLanguageList();
+                                    if (searchQuery != null) {
+                                      list = list.where((e) {
+                                        return e.showName.contains(searchQuery);
+                                      }).toList();
+                                    }
+                                    return SelectItemBuilder(
+                                      childCount: list.isEmpty ? 0 : null,
+                                      builder: (context, index) {
+                                        return SelectGroup(
+                                          children: [
+                                            for (final value in list)
+                                              SelectItemButton(
+                                                style: ButtonStyle.text(
+                                                  size: .small,
+                                                ),
+                                                value: value,
+                                                child: Text(value.showName),
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ).call,
+                                itemBuilder: (context, item) {
+                                  return Text(item.showName);
+                                },
+                                onChanged: (value) {
+                                  print(value);
+                                  setState(() {
+                                    selectedValueLan = value;
+                                  });
+                                },
+                                constraints: const BoxConstraints(
+                                  minWidth: 200,
+                                ),
+                                value: selectedValueLan,
+                                placeholder: const Text('Any'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Date range:',
+                              style: .new(color: Colors.gray),
+                            ),
+                            SizedBox(
+                              width: 120,
+                              height: 40,
+                              child: Select<String>(
+                                borderRadius: .circular(5),
+                                popup: SelectPopup.builder(
+                                  enableSearch: false,
+                                  builder: (context, searchQuery) async {
+                                    List<String> list = [
+                                      'Today',
+                                      'This week',
+                                      'This month',
+                                    ];
+                                    if (searchQuery != null) {
+                                      list = list.where((e) {
+                                        return e.contains(searchQuery);
+                                      }).toList();
+                                    }
+                                    return SelectItemBuilder(
+                                      childCount: list.isEmpty ? 0 : null,
+                                      builder: (context, index) {
+                                        return SelectGroup(
+                                          children: [
+                                            for (final value in list)
+                                              SelectItemButton(
+                                                style: ButtonStyle.text(
+                                                  size: .small,
+                                                ),
+                                                value: value,
+                                                child: Text(value),
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ).call,
+                                itemBuilder: (context, item) {
+                                  return Text(item);
+                                },
+                                onChanged: (value) {
+                                  print(value);
+                                  setState(() {
+                                    selectedValueDateRange = value;
+                                  });
+                                },
+                                constraints: const BoxConstraints(
+                                  minWidth: 200,
+                                ),
+                                value: selectedValueDateRange,
+                                placeholder: const Text('Any'),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
