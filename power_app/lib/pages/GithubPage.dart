@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart'
-    hide CircularProgressIndicator, Colors, Divider, ButtonStyle, RadioGroup;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:power_app/api/GithubApi.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -74,8 +72,9 @@ class _GithubPageState extends State<GithubPage> {
             margin: .symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-                SizedBox(
+                Container(
                   height: 40,
+                  margin: .all(3),
                   child: Row(
                     mainAxisAlignment: .spaceBetween,
                     children: [
@@ -119,7 +118,6 @@ class _GithubPageState extends State<GithubPage> {
                                 width: 120,
                                 height: 40,
                                 child: Select<SpokeLanguage>(
-                                  popupWidthConstraint: .flexible,
                                   borderRadius: .circular(5),
                                   popup: SelectPopup.builder(
                                     builder: (context, searchQuery) async {
@@ -181,7 +179,6 @@ class _GithubPageState extends State<GithubPage> {
                                 width: 120,
                                 height: 40,
                                 child: Select<ProgramingLanguage>(
-                                  popupWidthConstraint: .flexible,
                                   borderRadius: .circular(5),
                                   popup: SelectPopup.builder(
                                     builder: (context, searchQuery) async {
@@ -217,9 +214,14 @@ class _GithubPageState extends State<GithubPage> {
                                     return Text(item.showName);
                                   },
                                   onChanged: (value) {
-                                    print(value);
                                     setState(() {
                                       selectedValueLan = value;
+                                      //todo
+                                      _stream = Stream.fromFuture(
+                                        GithubApi.fetch(
+                                          programingLan: value?.queryName,
+                                        ),
+                                      );
                                     });
                                   },
                                   constraints: const BoxConstraints(

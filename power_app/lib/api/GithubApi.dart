@@ -2,9 +2,11 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
 class GithubApi {
-  static Future<List<TrendItem?>> fetch() async {
+  static Future<List<TrendItem?>> fetch({String? programingLan}) async {
     var r = await http.get(
-      Uri.parse('https://github.com/trending?since=daily'),
+      programingLan == null
+          ? Uri.parse('https://github.com/trending?since=daily')
+          : Uri.parse('https://github.com/trending/$programingLan?since=daily'),
     );
     print('statusCode = ${r.statusCode}');
     var b = r.body;
