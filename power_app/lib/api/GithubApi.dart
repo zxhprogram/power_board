@@ -2,6 +2,9 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
 class GithubApi {
+  static List<ProgramingLanguage> _programingLanguages = [];
+  static List<SpokeLanguage> _spokenLanguages = [];
+
   static Future<List<TrendItem?>> fetch({String? programingLan}) async {
     var r = await http.get(
       programingLan == null
@@ -54,6 +57,9 @@ class GithubApi {
   }
 
   static Future<List<SpokeLanguage>> spokenLanguageList() async {
+    if (_spokenLanguages.isNotEmpty) {
+      return _spokenLanguages;
+    }
     var r = await http.get(
       Uri.parse('https://github.com/trending?since=daily'),
     );
@@ -64,16 +70,20 @@ class GithubApi {
       '.Box-header > .d-sm-flex > .position-relative > details > details-menu > .select-menu-list > div > a',
     );
     print(dataMenuButtonTextList.length);
-    return dataMenuButtonTextList.map((e) {
+    _spokenLanguages = dataMenuButtonTextList.map((e) {
       var lan = e.children[0].text.trim();
       var url = e.attributes['href']!;
       var pMap = Uri.parse(url).queryParameters;
       var shortFormat = pMap['spoken_language_code'] ?? '';
       return SpokeLanguage(spokenLanguage: lan, shortFormat: shortFormat);
     }).toList();
+    return _spokenLanguages;
   }
 
   static Future<List<ProgramingLanguage>> programingLanguageList() async {
+    if (_programingLanguages.isNotEmpty) {
+      return _programingLanguages;
+    }
     var r = await http.get(
       Uri.parse('https://github.com/trending?since=daily'),
     );
@@ -84,11 +94,12 @@ class GithubApi {
       '.Box-header > .d-sm-flex > .mb-3 > details > details-menu > .select-menu-list > div > a',
     );
     print(dataMenuButtonTextList.length);
-    return dataMenuButtonTextList.map((e) {
+    _programingLanguages = dataMenuButtonTextList.map((e) {
       var lan = e.text.trim();
       print(lan);
       return ProgramingLanguage(showName: lan, queryName: lan.toLowerCase());
     }).toList();
+    return _programingLanguages;
   }
 }
 
