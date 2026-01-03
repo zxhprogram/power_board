@@ -155,8 +155,14 @@ class _GithubPageState extends State<GithubPage> {
                                     return Text(item.spokenLanguage);
                                   },
                                   onChanged: (value) {
-                                    print(value);
                                     setState(() {
+                                      _stream = Stream.fromFuture(
+                                        GithubApi.fetch(
+                                          spokenLan: value?.shortFormat,
+                                          programingLan:
+                                              selectedValueLan?.queryName,
+                                        ),
+                                      );
                                       selectedValue = value;
                                     });
                                   },
@@ -216,10 +222,10 @@ class _GithubPageState extends State<GithubPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       selectedValueLan = value;
-                                      //todo
                                       _stream = Stream.fromFuture(
                                         GithubApi.fetch(
                                           programingLan: value?.queryName,
+                                          spokenLan: selectedValue?.shortFormat,
                                         ),
                                       );
                                     });

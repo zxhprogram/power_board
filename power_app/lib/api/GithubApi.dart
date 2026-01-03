@@ -5,11 +5,18 @@ class GithubApi {
   static List<ProgramingLanguage> _programingLanguages = [];
   static List<SpokeLanguage> _spokenLanguages = [];
 
-  static Future<List<TrendItem?>> fetch({String? programingLan}) async {
+  static Future<List<TrendItem?>> fetch({
+    String? programingLan,
+    String? spokenLan,
+  }) async {
     var r = await http.get(
       programingLan == null
-          ? Uri.parse('https://github.com/trending?since=daily')
-          : Uri.parse('https://github.com/trending/$programingLan?since=daily'),
+          ? Uri.parse(
+              'https://github.com/trending?since=daily${spokenLan != null ? '&spoken_language_code=$spokenLan' : ''}',
+            )
+          : Uri.parse(
+              'https://github.com/trending/$programingLan?since=daily${spokenLan != null ? '&spoken_language_code=$spokenLan' : ''}',
+            ),
     );
     print('statusCode = ${r.statusCode}');
     var b = r.body;
