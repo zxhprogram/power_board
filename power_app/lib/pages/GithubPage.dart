@@ -5,6 +5,8 @@ import 'package:power_app/api/GithubApi.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class GithubPage extends StatefulWidget {
+  const GithubPage({super.key});
+
   @override
   State<GithubPage> createState() => _GithubPageState();
 }
