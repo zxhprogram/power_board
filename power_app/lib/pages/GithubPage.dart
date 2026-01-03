@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:power_app/api/GithubApi.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -434,6 +435,17 @@ class _GithubPageState extends State<GithubPage> {
                                                       ),
                                                     ),
                                                     clipBehavior: .hardEdge,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: e.avatar,
+                                                      placeholder: (context, url) =>
+                                                          CircularProgressIndicator(),
+                                                      errorWidget: (_, _, _) =>
+                                                          FaIcon(
+                                                            FontAwesomeIcons
+                                                                .github,
+                                                            size: 18,
+                                                          ),
+                                                    ),
                                                   );
                                                 }),
                                               ],
