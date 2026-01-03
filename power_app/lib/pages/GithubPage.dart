@@ -444,6 +444,8 @@ class _GithubPageState extends State<GithubPage> {
                                                             FontAwesomeIcons
                                                                 .github,
                                                             size: 18,
+                                                            color: Colors
+                                                                .transparent,
                                                           ),
                                                     ),
                                                   );
