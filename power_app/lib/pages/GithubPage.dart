@@ -86,22 +86,28 @@ class _GithubPageState extends State<GithubPage> {
                           child: Row(
                             children: [
                               Container(
-                                padding: .all(4),
+                                padding: .all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.blue,
                                   border: .all(color: Colors.gray, width: 1),
                                 ),
                                 child: Text(
                                   'Repositories',
-                                  style: .new(color: Colors.white),
+                                  style: .new(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ).bold,
                               ),
                               Container(
-                                padding: .all(4),
+                                padding: .all(8),
                                 decoration: BoxDecoration(
                                   border: .all(color: Colors.gray, width: 1),
                                 ),
-                                child: Text('Developers').bold,
+                                child: Text(
+                                  'Developers',
+                                  style: .new(fontSize: 12),
+                                ).bold,
                               ),
                             ],
                           ),
