@@ -427,11 +427,6 @@ class _GithubPageState extends State<GithubPage> {
                                                     height: 20,
                                                     width: 20,
                                                     decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                          e.avatar,
-                                                        ),
-                                                      ),
                                                       borderRadius: .all(
                                                         .circular(10),
                                                       ),
@@ -443,6 +438,10 @@ class _GithubPageState extends State<GithubPage> {
                                                     clipBehavior: .hardEdge,
                                                     child: CachedNetworkImage(
                                                       imageUrl: e.avatar,
+                                                      httpHeaders: {
+                                                        'user-agent':
+                                                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0',
+                                                      },
                                                       placeholder: (context, url) =>
                                                           CircularProgressIndicator(),
                                                       errorWidget: (_, _, _) =>
